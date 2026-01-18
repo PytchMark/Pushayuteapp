@@ -79,7 +79,7 @@ const HomePage: React.FC = () => {
               className="text-4xl md:text-6xl font-black uppercase tracking-tighter mb-6"
             >
               Booked for the <span className="text-brand-red">moments that matter.</span>
-            </h2 >
+            </motion.h2>
             <p className="text-zinc-500 uppercase tracking-widest text-xs font-bold">Tell us the event. We’ll match the talent.</p>
           </div>
           
