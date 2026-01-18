@@ -1,43 +1,49 @@
-
 # Book-A-Yute | Premium Talent Roster
 
-A curated talent roster platform represented by Push-A-Yute. Built with React 19, Tailwind CSS, and Framer Motion.
+A curated talent roster platform with a red/black premium aesthetic, glow effects, and motion-driven UI. Built with Next.js 14 (App Router), Tailwind CSS, and Framer Motion.
 
 ## Tech Stack
-- **Frontend**: Vite + React 19 (SPA)
-- **Database/Auth**: Supabase
-- **Serving**: Node.js + `serve` (with SPA fallback)
-- **Deployment**: Google Cloud Run (Docker)
+- **Frontend**: Next.js 14 (App Router) + React + TypeScript
+- **Styling**: Tailwind CSS
+- **Motion**: Framer Motion
+- **Data**: Demo talent data (Supabase-ready)
 
 ## Local Development
-1. `npm install`
-2. `npm run dev`
+1. Install dependencies: `npm install`
+2. Start the dev server: `npm run dev`
+3. Open `http://localhost:3000`
 
-## Production Build & Test (Docker)
-To simulate the Google Cloud Run environment locally:
-```bash
-docker build -t book-a-yute .
-docker run -p 8080:8080 -e PORT=8080 book-a-yute
+## Environment Variables
+Create a `.env.local` file for local overrides. Example:
+```
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
 ```
 
-## Google Cloud Run Deployment
+See `.env.example` for placeholders.
 
-### 1. Build and Push to Artifact Registry/GCR
-Replace `PROJECT_ID` with your actual Google Cloud Project ID.
-```bash
-gcloud builds submit --tag gcr.io/PROJECT_ID/book-a-yute
+## Production Build
+```
+npm run build
+npm run start
 ```
 
-### 2. Deploy to Cloud Run
-```bash
-gcloud run deploy book-a-yute \
-  --image gcr.io/PROJECT_ID/book-a-yute \
-  --platform managed \
-  --region us-central1 \
-  --allow-unauthenticated \
-  --set-env-vars VITE_SUPABASE_URL=your_url,VITE_SUPABASE_ANON_KEY=your_key
-```
+## Vercel Deploy (Recommended)
+1. Push the repo to GitHub.
+2. Import the project in Vercel.
+3. Set environment variables in **Project Settings → Environment Variables**:
+   - `NEXT_PUBLIC_SITE_URL`
+   - `NEXT_PUBLIC_SUPABASE_URL` (optional)
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY` (optional)
+   - `SUPABASE_SERVICE_ROLE_KEY` (server-only; optional)
+4. Build Command: `npm run build`
+5. Output Directory: Leave blank (Next.js default)
+6. Deploy.
 
-### Important Notes
-- **SPA Routing**: The Docker container uses `serve -s`, which automatically redirects all unknown requests to `index.html`. This ensures that `react-router-dom` paths work correctly when the page is refreshed.
-- **Port Handling**: Cloud Run requires the container to listen on the port defined by the `$PORT` environment variable. The `package.json` start script is pre-configured for this.
+## Routes
+- `/` Home
+- `/roster` Roster
+- `/talent/[slug]` SEO talent profiles
+- `/request/[talentId]` Booking requests
+- `/apply` Join roster
+- `/dashboard` Talent portal shell
+- `/admin` Admin portal shell
