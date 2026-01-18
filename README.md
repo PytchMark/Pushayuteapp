@@ -1,11 +1,43 @@
-<div align="center">
 
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+# Book-A-Yute | Premium Talent Roster
 
-  <h1>Built with AI Studio</h2>
+A curated talent roster platform represented by Push-A-Yute. Built with React 19, Tailwind CSS, and Framer Motion.
 
-  <p>The fastest path from prompt to production with Gemini.</p>
+## Tech Stack
+- **Frontend**: Vite + React 19 (SPA)
+- **Database/Auth**: Supabase
+- **Serving**: Node.js + `serve` (with SPA fallback)
+- **Deployment**: Google Cloud Run (Docker)
 
-  <a href="https://aistudio.google.com/apps">Start building</a>
+## Local Development
+1. `npm install`
+2. `npm run dev`
 
-</div>
+## Production Build & Test (Docker)
+To simulate the Google Cloud Run environment locally:
+```bash
+docker build -t book-a-yute .
+docker run -p 8080:8080 -e PORT=8080 book-a-yute
+```
+
+## Google Cloud Run Deployment
+
+### 1. Build and Push to Artifact Registry/GCR
+Replace `PROJECT_ID` with your actual Google Cloud Project ID.
+```bash
+gcloud builds submit --tag gcr.io/PROJECT_ID/book-a-yute
+```
+
+### 2. Deploy to Cloud Run
+```bash
+gcloud run deploy book-a-yute \
+  --image gcr.io/PROJECT_ID/book-a-yute \
+  --platform managed \
+  --region us-central1 \
+  --allow-unauthenticated \
+  --set-env-vars VITE_SUPABASE_URL=your_url,VITE_SUPABASE_ANON_KEY=your_key
+```
+
+### Important Notes
+- **SPA Routing**: The Docker container uses `serve -s`, which automatically redirects all unknown requests to `index.html`. This ensures that `react-router-dom` paths work correctly when the page is refreshed.
+- **Port Handling**: Cloud Run requires the container to listen on the port defined by the `$PORT` environment variable. The `package.json` start script is pre-configured for this.

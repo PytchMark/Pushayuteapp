@@ -1,0 +1,8 @@
+{
+  "name": "Copy of Book-A-Yute.com",
+  "description": "A premium, curated talent roster platform represented by Push-A-Yute. Designed for exclusivity and professional booking coordination.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
