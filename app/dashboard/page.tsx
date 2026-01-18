@@ -1,25 +1,27 @@
-
-import React from 'react';
-
-const TalentDashboard: React.FC = () => {
+const TalentDashboard = () => {
   return (
     <div className="max-w-7xl mx-auto px-6 py-20">
       <header className="mb-12">
-        <h1 className="text-4xl font-black uppercase tracking-tighter mb-2">Member <span className="text-brand-red">Dashboard</span></h1>
-        <p className="text-zinc-500 text-sm font-bold uppercase tracking-widest">Status: <span className="text-green-500">Active Roster Member</span></p>
+        <h1 className="text-4xl font-black uppercase tracking-tighter mb-2">
+          Member <span className="text-brand-red">Dashboard</span>
+        </h1>
+        <p className="text-zinc-500 text-sm font-bold uppercase tracking-widest">
+          Status: <span className="text-green-500">Active Roster Member</span>
+        </p>
       </header>
 
       <div className="grid md:grid-cols-4 gap-8">
-        {/* Sidebar Nav */}
         <aside className="space-y-2">
-          {['Roster Profile', 'Media Assets', 'Booking Inquiries', 'Subscription'].map(item => (
-            <button key={item} className="w-full text-left p-4 text-xs font-black uppercase tracking-widest border border-zinc-900 hover:border-brand-red hover:bg-zinc-900 transition-all">
+          {['Roster Profile', 'Media Assets', 'Booking Inquiries', 'Subscription'].map((item) => (
+            <button
+              key={item}
+              className="w-full text-left p-4 text-xs font-black uppercase tracking-widest border border-zinc-900 hover:border-brand-red hover:bg-zinc-900 transition-all"
+            >
               {item}
             </button>
           ))}
         </aside>
 
-        {/* Content Area */}
         <div className="md:col-span-3 space-y-8">
           <section className="bg-zinc-950 border border-zinc-900 p-8">
             <h3 className="text-xl font-bold uppercase mb-6 tracking-tight">Active Representation</h3>
@@ -30,7 +32,9 @@ const TalentDashboard: React.FC = () => {
               <div>
                 <p className="font-bold text-white uppercase text-sm">Push A Yute Entertainment</p>
                 <p className="text-zinc-500 text-xs mt-1">Primary Agent: Marcus Thorne</p>
-                <p className="text-zinc-400 text-xs mt-2 underline cursor-pointer">Contact Representative</p>
+                <p className="text-zinc-400 text-xs mt-2 underline cursor-pointer">
+                  Contact Representative
+                </p>
               </div>
             </div>
           </section>
@@ -47,7 +51,11 @@ const TalentDashboard: React.FC = () => {
                     <p className="text-white font-bold text-sm uppercase">{q.event}</p>
                     <p className="text-zinc-500 text-[10px] uppercase font-bold mt-1">{q.date}</p>
                   </div>
-                  <span className={`text-[10px] font-black uppercase px-3 py-1 bg-zinc-800 ${q.status === 'Negotiating' ? 'text-brand-red' : 'text-zinc-400'}`}>
+                  <span
+                    className={`text-[10px] font-black uppercase px-3 py-1 bg-zinc-800 ${
+                      q.status === 'Negotiating' ? 'text-brand-red' : 'text-zinc-400'
+                    }`}
+                  >
                     {q.status}
                   </span>
                 </div>
