@@ -1,0 +1,27 @@
+<!doctype html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Brand Portal</title><link rel="stylesheet" href="/public/assets/css/shared.css"><link rel="stylesheet" href="./brand.css"></head>
+<body>
+<header class="topbar"><div class="container topbar-inner"><strong>InfluencerHub · Brand</strong><span class="glass" style="padding:.4rem .7rem">Brand Account</span></div></header>
+<div class="layout">
+  <aside class="sidebar" id="brandSidebar">
+    <button class="active" data-tab-target="discover">Discover</button>
+    <button data-tab-target="campaign">Campaign Tray</button>
+    <button data-tab-target="requests">My Requests</button>
+  </aside>
+  <main class="panel">
+    <section data-tab-pane="discover"><h2>Discover Influencers</h2><div style="display:flex;gap:.4rem"><input id="discoverQuery" placeholder="Search"/><button class="btn" id="searchBtn">Search</button></div><div id="discoverList" class="card-grid" style="margin-top:1rem"></div></section>
+    <section data-tab-pane="campaign" hidden>
+      <h2>Campaign Tray</h2>
+      <div class="glass card"><ul id="trayItems"></ul>
+      <div class="field"><label>Campaign Name</label><input id="campaign_name"></div>
+      <div class="field"><label>Message</label><textarea id="message"></textarea></div>
+      <div class="field"><label>Budget</label><input id="budget" type="number"></div>
+      <div class="field"><label>Deliverables</label><input id="deliverables"></div>
+      <div class="field"><label>Deadline</label><input id="deadline" type="date"></div>
+      <div class="field"><label>Channel</label><select id="channel"><option>instagram</option><option>tiktok</option><option>youtube</option></select></div>
+      <button class="btn" id="submitCampaign">Submit to Selected Influencers</button></div>
+    </section>
+    <section data-tab-pane="requests" hidden><h2>Request Tracker</h2><div id="myRequests" class="card-grid"></div></section>
+  </main>
+</div>
+<script src="/public/assets/js/api.js"></script><script src="/public/assets/js/ui.js"></script><script src="/public/assets/js/formatters.js"></script><script src="./brand.js"></script>
+</body></html>

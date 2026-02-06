@@ -1,0 +1,33 @@
+<!doctype html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Influencer Portal</title><link rel="stylesheet" href="/public/assets/css/shared.css"><link rel="stylesheet" href="./influencer.css"></head>
+<body>
+<header class="topbar"><div class="container topbar-inner"><strong>InfluencerHub · Influencer</strong><span class="glass" style="padding:.4rem .7rem">Account</span></div></header>
+<div class="layout">
+  <aside class="sidebar" id="influencerSidebar">
+    <button class="active" data-tab-target="profile">Profile</button>
+    <button data-tab-target="media">Media</button>
+    <button data-tab-target="requests">Requests</button>
+  </aside>
+  <main class="panel">
+    <section data-tab-pane="profile">
+      <h2 class="section-title">Profile Builder</h2>
+      <form id="profileForm" class="glass card">
+        <div class="field"><label>Handle</label><input name="handle"></div>
+        <div class="field"><label>Display Name</label><input name="display_name"></div>
+        <div class="field"><label>Bio</label><textarea name="bio"></textarea></div>
+        <div class="field"><label>Niche</label><input name="niche"></div>
+        <div class="field"><label>Location</label><input name="location"></div>
+        <div class="field"><label>Followers</label><input name="followers_count" type="number"></div>
+        <div class="field"><label>Engagement Rate</label><input name="engagement_rate" type="number" step="0.01"></div>
+        <div class="field"><label>Rate Min</label><input name="rate_min" type="number"></div>
+        <div class="field"><label>Rate Max</label><input name="rate_max" type="number"></div>
+        <div class="field"><label>Instagram</label><input name="instagram"></div>
+        <div class="field"><label>TikTok</label><input name="tiktok"></div>
+        <button type="button" class="btn" id="saveProfile">Save Profile</button>
+      </form>
+    </section>
+    <section data-tab-pane="media" hidden><h2>Media Upload</h2><div class="glass card"><input type="file" id="mediaUpload" /><p id="uploadResult"></p></div></section>
+    <section data-tab-pane="requests" hidden><h2>Inbound Requests</h2><div id="requestList" class="card-grid"></div></section>
+  </main>
+</div>
+<script src="/public/assets/js/api.js"></script><script src="/public/assets/js/ui.js"></script><script src="./influencer.js"></script>
+</body></html>

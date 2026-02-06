@@ -1,0 +1,21 @@
+<!doctype html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Admin Portal</title><link rel="stylesheet" href="/public/assets/css/shared.css"></head>
+<body>
+<header class="topbar"><div class="container topbar-inner"><strong>InfluencerHub · Admin</strong></div></header>
+<div class="layout">
+  <aside class="sidebar" id="adminSidebar">
+    <button class="active" data-tab-target="login">Login</button>
+    <button data-tab-target="summary">Summary</button>
+    <button data-tab-target="influencers">Influencers</button>
+    <button data-tab-target="brands">Brands</button>
+    <button data-tab-target="requests">Requests</button>
+  </aside>
+  <main class="panel">
+    <section data-tab-pane="login"><h2>Admin Login</h2><div class="glass card"><div class="field"><label>Username</label><input id="username"></div><div class="field"><label>Password</label><input id="password" type="password"></div><button class="btn" id="adminLogin">Login</button></div></section>
+    <section data-tab-pane="summary" hidden><h2>Summary</h2><pre id="metrics" class="glass card"></pre></section>
+    <section data-tab-pane="influencers" hidden><h2>Influencers</h2><pre id="influencerTable" class="glass card"></pre></section>
+    <section data-tab-pane="brands" hidden><h2>Brands</h2><pre id="brandTable" class="glass card"></pre></section>
+    <section data-tab-pane="requests" hidden><h2>Requests</h2><pre id="requestTable" class="glass card"></pre></section>
+  </main>
+</div>
+<script src="/public/assets/js/api.js"></script><script src="/public/assets/js/ui.js"></script><script src="./admin.js"></script>
+</body></html>
