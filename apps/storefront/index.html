@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>InfluencerHub — Premium Collab Marketplace</title>
+  <link rel="stylesheet" href="/public/assets/css/shared.css" />
+  <link rel="stylesheet" href="/public/assets/css/motion.css" />
+</head>
+<body>
+  <header class="topbar"><div class="container topbar-inner"><strong>InfluencerHub</strong><nav><a href="/apps/brand">Brand Portal</a> · <a href="/apps/influencer">Influencer Portal</a> · <a href="/apps/admin">Admin</a></nav></div></header>
+
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="container hero-content hero-copy">
+      <h1><span class="reveal-line">Find creators who move markets.</span></h1>
+      <p>Search, compare rates, and launch collaboration requests in one streamlined flow.</p>
+      <div><a class="btn shimmer" href="#discovery">Start Discovering</a></div>
+    </div>
+  </section>
+
+  <section class="story-pin container">
+    <article class="chapter glass card">
+      <h2>Story-first matching</h2><ul><li>Intent-led discovery by niche and channel.</li><li>Signal scoring for engagement quality.</li><li>Campaign-ready profile snapshots.</li></ul>
+    </article>
+  </section>
+  <section class="story-pin container"><article class="chapter glass card"><h2>Built for agencies</h2><ul><li>Shortlist and save talent cohorts.</li><li>Bulk request workflow for campaign teams.</li><li>Status tracking from new to booked.</li></ul></article></section>
+  <section class="story-pin container"><article class="chapter glass card"><h2>Scale with confidence</h2><ul><li>Rate transparency and package clarity.</li><li>Portfolio media managed via Cloudinary.</li><li>Supabase-backed auth and data control.</li></ul></article></section>
+
+  <section class="deck-wrap">
+    <div class="deck-track">
+      <div class="deck-panel"><div class="glass card tilt-card"><h3>Search smarter</h3><p>Filter by niche, followers, region, and channel.</p></div></div>
+      <div class="deck-panel"><div class="glass card tilt-card"><h3>Compare rates</h3><p>Inspect rate bands, engagement, and avg views.</p></div></div>
+      <div class="deck-panel"><div class="glass card tilt-card"><h3>Request in one click</h3><p>Campaign tray submits to multiple creators at once.</p></div></div>
+      <div class="deck-panel"><div class="glass card tilt-card"><h3>Track outcomes</h3><p>From outreach to booking, statuses stay synchronized.</p></div></div>
+    </div>
+  </section>
+
+  <section class="discovery" id="discovery">
+    <div class="container">
+      <h2>Discovery Grid</h2>
+      <div style="display:flex; gap:.5rem; flex-wrap:wrap; margin: 1rem 0;">
+        <input id="q" placeholder="Search name, niche, handle" />
+        <select id="niche"><option value="">All niches</option><option>Food</option><option>Beauty</option><option>Fitness</option><option>Tech</option><option>Travel</option></select>
+        <button class="btn" id="searchBtn">Search</button>
+      </div>
+      <div id="grid" class="card-grid"></div>
+    </div>
+  </section>
+
+  <section class="container" style="padding:5rem 0; display:grid; gap:1rem; grid-template-columns:repeat(auto-fit,minmax(240px,1fr));">
+    <article class="glass card"><h3>Become a brand</h3><p>Build campaign trays and manage request pipelines.</p><a class="btn" href="/apps/brand">Open Brand Portal</a></article>
+    <article class="glass card"><h3>Join as influencer</h3><p>Create profile, upload media, and handle inbound collabs.</p><a class="btn" href="/apps/influencer">Open Influencer Portal</a></article>
+    <article class="glass card"><h3>Pricing tiers</h3><p>Starter, Growth, and Agency plans (visual placeholder).</p><button class="btn ghost">Coming soon</button></article>
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/bundled/lenis.min.js"></script>
+  <script src="/public/assets/js/api.js"></script>
+  <script src="/public/assets/js/formatters.js"></script>
+  <script src="/public/assets/js/motion.js"></script>
+  <script>
+    const grid = document.getElementById('grid');
+    function skeleton(){ grid.innerHTML = '<div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>'; }
+    async function load(){
+      skeleton();
+      const query = document.getElementById('q').value;
+      const niche = document.getElementById('niche').value;
+      const data = await IHApi.publicInfluencers({ query, niche });
+      grid.innerHTML = data.influencers.map((item)=>`<article class="glass card tilt-card"><img src="${item.profile_image_url}" style="width:100%;aspect-ratio:1.25;object-fit:cover;border-radius:12px"/><h4>${item.display_name}</h4><p>${item.niche} · ${item.location}</p><small>${IHFormatters.num(item.followers_count)} followers · ${item.engagement_rate}% ER</small><div style="margin-top:.8rem"><span class="btn ghost">${IHFormatters.money(item.rate_min)}-${IHFormatters.money(item.rate_max)}</span></div></article>`).join('');
+    }
+    document.getElementById('searchBtn').addEventListener('click', load);
+    load();
+  </script>
+</body>
+</html>
