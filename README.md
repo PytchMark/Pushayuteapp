@@ -1,52 +1,180 @@
-# InfluencerHub (Vanilla HTML/CSS/JS + Express + Supabase + Cloudinary)
+# InfluencerHub
 
-InfluencerHub is a production-oriented creator discovery + collaboration workflow platform built with:
-- Vanilla frontend (no React)
-- Express API (Cloud Run ready)
-- Supabase (Postgres + Auth + RLS)
-- Cloudinary media upload/CDN
-- GSAP + ScrollTrigger motion for premium storefront storytelling
+InfluencerHub is a production-focused influencer discovery and campaign request platform built in **vanilla HTML/CSS/JS** with an **Express API** and designed for **Google Cloud Run**.
 
-## Project Structure
+It combines a premium animated storefront experience with three operational portals:
+- **Influencer Portal** (profile + media + inbound requests)
+- **Brand Portal** (search, shortlist, campaign tray, request tracking)
+- **Admin Portal** (credential-based internal dashboard)
+
+Core backend integrations:
+- **Supabase** for auth-aware data modeling and RLS policies.
+- **Cloudinary** for secure media upload and CDN-hosted assets.
+
+---
+
+## Product Overview
+
+### 1) Public Storefront + Discovery
+A high-end agency-style marketing and discovery front with:
+- Cinematic hero, staggered reveals, and CTA micro-interactions.
+- Storytelling chapters designed for scroll-led narrative pacing.
+- Horizontal scroll deck driven by vertical scroll progress.
+- API-powered discovery grid with search and niche filters.
+- Card tilt interactions and skeleton loading.
+
+### 2) Influencer Portal
+For creators to manage their commercial profile:
+- Update handle, bio, niche, platform handles, rates, and audience metrics.
+- Upload media via Cloudinary (`/api/media/upload`).
+- Review inbound collaboration requests.
+- Update request statuses (`new/contacted/negotiating/booked/closed`).
+
+### 3) Brand Portal
+For campaign managers and business teams:
+- Discover influencers and inspect profile summaries.
+- Add creators to a **Campaign Tray** (cart-style selection).
+- Submit one campaign to multiple influencers in one action.
+- Track submitted request statuses.
+- Quick WhatsApp outreach fallback from discovery cards.
+
+### 4) Admin Portal
+For internal operations:
+- Env-credential login (`ADMIN_USERNAME` / `ADMIN_PASSWORD`), separate from Supabase auth.
+- View summary metrics and top niches.
+- View influencer, brand, and request datasets.
+- Admin token-based protected endpoints.
+
+---
+
+## Architecture
 
 ```txt
 /apps
-  /storefront/index.html
-  /influencer/index.html influencer.css influencer.js
-  /brand/index.html brand.css brand.js
-  /admin/index.html admin.js
-/public/assets/css/shared.css motion.css
-/public/assets/js/api.js ui.js formatters.js motion.js
-/services/supabase.js auth.js cloudinary.js
-/server.js
-/.env.example
-/Dockerfile
+  /storefront
+    index.html
+    storefront.js
+  /influencer
+    index.html
+    influencer.css
+    influencer.js
+  /brand
+    index.html
+    brand.css
+    brand.js
+  /admin
+    index.html
+    admin.js
+/public
+  /assets
+    /css
+      shared.css
+      motion.css
+    /js
+      api.js
+      ui.js
+      formatters.js
+      motion.js
+/services
+  supabase.js
+  auth.js
+  cloudinary.js
+/scripts
+  seed.js
+server.js
+Dockerfile
+.env.example
+README.md
 ```
 
-## Local Setup
+---
+
+## API Surface
+
+### Public
+- `GET /api/public/influencers`
+- `GET /api/public/influencers/:handle`
+
+### Brand
+- `POST /api/brand/shortlist`
+- `GET /api/brand/shortlist`
+- `POST /api/brand/requests` (multi-influencer)
+- `GET /api/brand/requests`
+
+### Influencer
+- `GET /api/influencer/me`
+- `POST /api/influencer/profile`
+- `POST /api/media/upload`
+- `GET /api/influencer/requests`
+- `POST /api/influencer/requests/:id/status`
+
+### Admin
+- `POST /api/admin/login`
+- `GET /api/admin/summary`
+- `GET /api/admin/influencers`
+- `GET /api/admin/brands`
+- `GET /api/admin/requests`
+
+---
+
+## Motion and Performance Strategy
+
+- **GSAP + ScrollTrigger** for hero/story/deck motion choreography.
+- **Lenis** enabled on desktop for smooth wheel-based scroll.
+- `prefers-reduced-motion` respected (heavy animation disabled).
+- Mobile guardrails reduce expensive effects on small viewports.
+- Animations primarily use `transform` + `opacity` for better compositing performance.
+
+---
+
+## Environment Variables
+
+Use `.env.example` as the source of truth:
+
+```env
+SUPABASE_URL=
+SUPABASE_SERVICE_ROLE_KEY=
+SUPABASE_ANON_KEY=
+JWT_SECRET=
+ADMIN_USERNAME=
+ADMIN_PASSWORD=
+CLOUDINARY_CLOUD_NAME=
+CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
+CLOUDINARY_FOLDER=influencerhub/{userId}
+PORT=8080
+NODE_ENV=development
+CORS_ORIGINS=
+```
+
+---
+
+## Local Development
 
 1. Install dependencies
 ```bash
 npm install
 ```
 
-2. Copy env values
+2. Create env file
 ```bash
 cp .env.example .env
 ```
 
-3. Start local server
+3. Run app
 ```bash
 npm run dev
 ```
 
-App URLs:
-- Storefront: `http://localhost:8080/apps/storefront`
-- Influencer portal: `http://localhost:8080/apps/influencer`
-- Brand portal: `http://localhost:8080/apps/brand`
-- Admin portal: `http://localhost:8080/apps/admin`
+App paths:
+- `http://localhost:8080/apps/storefront/`
+- `http://localhost:8080/apps/influencer/`
+- `http://localhost:8080/apps/brand/`
+- `http://localhost:8080/apps/admin/`
 
-## Supabase SQL Schema (copy/paste)
+---
+
+## Supabase Schema + RLS (Copy/Paste)
 
 ```sql
 create extension if not exists pgcrypto;
@@ -152,19 +280,26 @@ create policy "brands manage own shortlist" on shortlists
 for all using (brand_user_id = auth.uid()) with check (brand_user_id = auth.uid());
 ```
 
-### Admin Access Note
-Admin portal auth is app-level (`ADMIN_USERNAME`, `ADMIN_PASSWORD`) and does **not** rely on Supabase auth.
+---
+
+## Demo Data
+
+`server.js` seeds 12 demo influencers if the `influencers` table is empty at startup.
+
+---
 
 ## Cloudinary Setup
-1. Create Cloudinary account.
-2. Set `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`.
-3. Upload endpoint: `POST /api/media/upload` with multipart key `file`.
 
-## Demo Seed Data
-- `server.js` performs insert-if-empty seeding for 12 influencer records at startup.
-- Remove/disable by deleting `ensureSeedData()` call in `server.js`.
+1. Create a Cloudinary account.
+2. Configure env vars:
+   - `CLOUDINARY_CLOUD_NAME`
+   - `CLOUDINARY_API_KEY`
+   - `CLOUDINARY_API_SECRET`
+3. Upload media from influencer portal, or POST multipart file to `/api/media/upload`.
 
-## Cloud Run Deploy
+---
+
+## Cloud Run Deployment
 
 ```bash
 gcloud builds submit --tag gcr.io/$GOOGLE_CLOUD_PROJECT/influencerhub
@@ -176,8 +311,11 @@ gcloud run deploy influencerhub \
   --set-env-vars SUPABASE_URL=...,SUPABASE_SERVICE_ROLE_KEY=...,SUPABASE_ANON_KEY=...,JWT_SECRET=...,ADMIN_USERNAME=...,ADMIN_PASSWORD=...,CLOUDINARY_CLOUD_NAME=...,CLOUDINARY_API_KEY=...,CLOUDINARY_API_SECRET=...
 ```
 
-## Motion + Performance
-- GSAP + ScrollTrigger implemented in `/public/assets/js/motion.js`.
-- Lenis smooth scrolling enabled on desktop and skipped on mobile.
-- `prefers-reduced-motion` guard disables heavy motion.
-- Transform/opacity-driven animations to reduce repaint overhead.
+---
+
+## Production Readiness Notes
+
+- Frontend scripts now avoid fragile implicit global DOM references.
+- Discovery/portal screens now surface API failures instead of failing silently.
+- Admin auth is intentionally decoupled from Supabase per requirements.
+- Ensure Cloud Run service env vars are correctly set; missing Supabase/Cloudinary values will cause request failures.

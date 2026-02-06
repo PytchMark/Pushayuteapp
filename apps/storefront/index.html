@@ -60,18 +60,7 @@
   <script src="/public/assets/js/api.js"></script>
   <script src="/public/assets/js/formatters.js"></script>
   <script src="/public/assets/js/motion.js"></script>
-  <script>
-    const grid = document.getElementById('grid');
-    function skeleton(){ grid.innerHTML = '<div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>'; }
-    async function load(){
-      skeleton();
-      const query = document.getElementById('q').value;
-      const niche = document.getElementById('niche').value;
-      const data = await IHApi.publicInfluencers({ query, niche });
-      grid.innerHTML = data.influencers.map((item)=>`<article class="glass card tilt-card"><img src="${item.profile_image_url}" style="width:100%;aspect-ratio:1.25;object-fit:cover;border-radius:12px"/><h4>${item.display_name}</h4><p>${item.niche} · ${item.location}</p><small>${IHFormatters.num(item.followers_count)} followers · ${item.engagement_rate}% ER</small><div style="margin-top:.8rem"><span class="btn ghost">${IHFormatters.money(item.rate_min)}-${IHFormatters.money(item.rate_max)}</span></div></article>`).join('');
-    }
-    document.getElementById('searchBtn').addEventListener('click', load);
-    load();
-  </script>
+  <script src="/apps/storefront/storefront.js"></script>
+  
 </body>
 </html>
