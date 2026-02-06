@@ -1,0 +1,19 @@
+.hero{min-height:88vh; display:grid; align-items:center; position:relative; overflow:hidden;}
+.hero-bg{position:absolute; inset:-10%; background:url('https://images.unsplash.com/photo-1611162616475-46b635cb6868?q=80&w=1900&auto=format&fit=crop') center/cover; filter:brightness(.35); transform:scale(1.1);}
+.hero-content{position:relative; z-index:1; padding:6rem 0;}
+.reveal-line{display:block; overflow:hidden;}
+.shimmer{position:relative; overflow:hidden;}
+.shimmer::after{content:''; position:absolute; inset:0; background:linear-gradient(120deg,transparent,rgba(255,255,255,.3),transparent); transform:translateX(-120%); animation:shine 2.4s linear infinite;}
+@keyframes shine{to{transform:translateX(120%);}}
+.story-pin{height:100vh; display:grid; place-items:center;}
+.chapter{max-width:900px; opacity:.2; transform:scale(.93);}
+.deck-wrap{position:relative; overflow:hidden;}
+.deck-track{display:flex; width:400vw;}
+.deck-panel{width:100vw; min-height:80vh; padding:3rem; display:grid; place-items:center;}
+.tilt-card{transform-style:preserve-3d; transition:transform .2s ease;}
+.discovery{padding:4rem 0;}
+.skeleton{height:240px; border-radius:16px; background:linear-gradient(90deg,#0f1524,#1a243b,#0f1524); background-size:200% 100%; animation:pulse 1.2s linear infinite;}
+@keyframes pulse{to{background-position:200% 0;}}
+@media (prefers-reduced-motion: reduce){
+ *{animation:none !important; transition:none !important;}
+}
