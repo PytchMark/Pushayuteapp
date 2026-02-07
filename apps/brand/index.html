@@ -1,27 +1,198 @@
-<!doctype html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Brand Portal</title><link rel="stylesheet" href="/public/assets/css/shared.css"><link rel="stylesheet" href="./brand.css"></head>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Brand Portal — InfluencerHub</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet" />
+  
+  <!-- Icons -->
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="/public/assets/css/shared.css" />
+  <link rel="stylesheet" href="/apps/brand/brand.css" />
+</head>
 <body>
-<header class="topbar"><div class="container topbar-inner"><strong>InfluencerHub · Brand</strong><span class="glass" style="padding:.4rem .7rem">Brand Account</span></div></header>
-<div class="layout">
-  <aside class="sidebar" id="brandSidebar">
-    <button class="active" data-tab-target="discover">Discover</button>
-    <button data-tab-target="campaign">Campaign Tray</button>
-    <button data-tab-target="requests">My Requests</button>
-  </aside>
-  <main class="panel">
-    <section data-tab-pane="discover"><h2>Discover Influencers</h2><div style="display:flex;gap:.4rem"><input id="discoverQuery" placeholder="Search"/><button class="btn" id="searchBtn">Search</button></div><div id="discoverList" class="card-grid" style="margin-top:1rem"></div></section>
-    <section data-tab-pane="campaign" hidden>
-      <h2>Campaign Tray</h2>
-      <div class="glass card"><ul id="trayItems"></ul>
-      <div class="field"><label>Campaign Name</label><input id="campaign_name"></div>
-      <div class="field"><label>Message</label><textarea id="message"></textarea></div>
-      <div class="field"><label>Budget</label><input id="budget" type="number"></div>
-      <div class="field"><label>Deliverables</label><input id="deliverables"></div>
-      <div class="field"><label>Deadline</label><input id="deadline" type="date"></div>
-      <div class="field"><label>Channel</label><select id="channel"><option>instagram</option><option>tiktok</option><option>youtube</option></select></div>
-      <button class="btn" id="submitCampaign">Submit to Selected Influencers</button></div>
-    </section>
-    <section data-tab-pane="requests" hidden><h2>Request Tracker</h2><div id="myRequests" class="card-grid"></div></section>
-  </main>
-</div>
-<script src="/public/assets/js/api.js"></script><script src="/public/assets/js/ui.js"></script><script src="/public/assets/js/formatters.js"></script><script src="./brand.js"></script>
-</body></html>
+  <!-- Navigation -->
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a href="/" class="topbar-logo" data-testid="logo">
+        <span class="logo-dot"></span>
+        InfluencerHub
+      </a>
+      <div class="flex items-center gap-2">
+        <span class="chip chip-primary" data-testid="user-badge">
+          <i class="ph ph-buildings"></i>
+          Brand Account
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Layout -->
+  <div class="layout">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="brandSidebar">
+      <div class="sidebar-title">Navigation</div>
+      <button class="active" data-tab-target="discover" data-testid="tab-discover">
+        <i class="ph ph-magnifying-glass"></i>
+        Discover
+      </button>
+      <button data-tab-target="tray" data-testid="tab-tray">
+        <i class="ph ph-shopping-cart"></i>
+        Campaign Tray
+        <span class="tray-count" id="trayCount">0</span>
+      </button>
+      <button data-tab-target="requests" data-testid="tab-requests">
+        <i class="ph ph-paper-plane-tilt"></i>
+        My Requests
+      </button>
+      <div class="divider"></div>
+      <button data-tab-target="shortlist" data-testid="tab-shortlist">
+        <i class="ph ph-heart"></i>
+        Saved
+      </button>
+    </aside>
+
+    <!-- Main Panel -->
+    <main class="panel">
+      <!-- Discover Tab -->
+      <section data-tab-pane="discover" data-testid="pane-discover">
+        <div class="panel-header">
+          <h2 class="panel-title">Discover Influencers</h2>
+        </div>
+        
+        <div class="discover-filters" data-testid="filters">
+          <input 
+            type="text" 
+            id="discoverQuery" 
+            placeholder="Search by name, niche, or handle..." 
+            data-testid="discover-search"
+          />
+          <select id="discoverNiche" data-testid="discover-niche">
+            <option value="">All Niches</option>
+            <option value="Food">Food</option>
+            <option value="Beauty">Beauty</option>
+            <option value="Fitness">Fitness</option>
+            <option value="Tech">Tech</option>
+            <option value="Travel">Travel</option>
+          </select>
+          <button class="btn btn-primary" id="discoverBtn" data-testid="discover-button">
+            <i class="ph ph-magnifying-glass"></i>
+            Search
+          </button>
+        </div>
+        
+        <div id="discoverGrid" class="card-grid" data-testid="discover-grid"></div>
+      </section>
+
+      <!-- Campaign Tray Tab -->
+      <section data-tab-pane="tray" hidden data-testid="pane-tray">
+        <div class="panel-header">
+          <h2 class="panel-title">Campaign Tray</h2>
+          <button class="btn btn-ghost" id="clearTray" data-testid="clear-tray">
+            <i class="ph ph-trash"></i>
+            Clear All
+          </button>
+        </div>
+
+        <div class="tray-layout">
+          <div class="tray-items" id="trayItems" data-testid="tray-items">
+            <div class="empty-state">
+              <div class="empty-state-icon"><i class="ph ph-users-three"></i></div>
+              <h4>No influencers selected</h4>
+              <p>Add influencers from the Discover tab to start your campaign.</p>
+            </div>
+          </div>
+          
+          <div class="tray-form card card-elevated" data-testid="campaign-form">
+            <h3 style="margin-bottom: 1.5rem;">Campaign Details</h3>
+            
+            <div class="field">
+              <label for="campaign_name">Campaign Name *</label>
+              <input type="text" id="campaign_name" placeholder="e.g., Summer Launch 2024" data-testid="campaign-name" />
+            </div>
+            
+            <div class="field">
+              <label for="message">Message to Influencers</label>
+              <textarea id="message" rows="4" placeholder="Describe your campaign, goals, and what you're looking for..." data-testid="campaign-message"></textarea>
+            </div>
+            
+            <div class="field-row">
+              <div class="field">
+                <label for="budget">Budget (USD)</label>
+                <input type="number" id="budget" placeholder="5000" data-testid="campaign-budget" />
+              </div>
+              <div class="field">
+                <label for="deadline">Deadline</label>
+                <input type="date" id="deadline" data-testid="campaign-deadline" />
+              </div>
+            </div>
+            
+            <div class="field">
+              <label for="deliverables">Deliverables</label>
+              <input type="text" id="deliverables" placeholder="e.g., 2 Reels, 3 Stories" data-testid="campaign-deliverables" />
+            </div>
+            
+            <div class="field">
+              <label for="channel">Primary Channel</label>
+              <select id="channel" data-testid="campaign-channel">
+                <option value="instagram">Instagram</option>
+                <option value="tiktok">TikTok</option>
+                <option value="youtube">YouTube</option>
+              </select>
+            </div>
+            
+            <button class="btn btn-primary btn-lg w-full btn-shimmer" id="submitCampaign" data-testid="submit-campaign">
+              <i class="ph ph-paper-plane-tilt"></i>
+              Send Campaign Requests
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- My Requests Tab -->
+      <section data-tab-pane="requests" hidden data-testid="pane-requests">
+        <div class="panel-header">
+          <h2 class="panel-title">My Requests</h2>
+          <button class="btn btn-ghost" id="refreshRequests" data-testid="refresh-requests">
+            <i class="ph ph-arrows-clockwise"></i>
+            Refresh
+          </button>
+        </div>
+        
+        <div id="requestsGrid" class="card-grid" data-testid="requests-grid"></div>
+      </section>
+
+      <!-- Shortlist Tab -->
+      <section data-tab-pane="shortlist" hidden data-testid="pane-shortlist">
+        <div class="panel-header">
+          <h2 class="panel-title">Saved Influencers</h2>
+        </div>
+        
+        <div id="shortlistGrid" class="card-grid" data-testid="shortlist-grid">
+          <div class="empty-state" style="grid-column: 1 / -1;">
+            <div class="empty-state-icon"><i class="ph ph-heart"></i></div>
+            <h4>No saved influencers</h4>
+            <p>Save influencers you're interested in for quick access later.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Toast Container -->
+  <div id="toastContainer"></div>
+
+  <!-- Scripts -->
+  <script src="/public/assets/js/api.js"></script>
+  <script src="/public/assets/js/ui.js"></script>
+  <script src="/public/assets/js/formatters.js"></script>
+  <script src="/apps/brand/brand.js"></script>
+</body>
+</html>
