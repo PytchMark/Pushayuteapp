@@ -1,21 +1,250 @@
-<!doctype html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Admin Portal</title><link rel="stylesheet" href="/public/assets/css/shared.css"></head>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Portal — InfluencerHub</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet" />
+  
+  <!-- Icons -->
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="/public/assets/css/shared.css" />
+  <link rel="stylesheet" href="/apps/admin/admin.css" />
+</head>
 <body>
-<header class="topbar"><div class="container topbar-inner"><strong>InfluencerHub · Admin</strong></div></header>
-<div class="layout">
-  <aside class="sidebar" id="adminSidebar">
-    <button class="active" data-tab-target="login">Login</button>
-    <button data-tab-target="summary">Summary</button>
-    <button data-tab-target="influencers">Influencers</button>
-    <button data-tab-target="brands">Brands</button>
-    <button data-tab-target="requests">Requests</button>
-  </aside>
-  <main class="panel">
-    <section data-tab-pane="login"><h2>Admin Login</h2><div class="glass card"><div class="field"><label>Username</label><input id="username"></div><div class="field"><label>Password</label><input id="password" type="password"></div><button class="btn" id="adminLogin">Login</button></div></section>
-    <section data-tab-pane="summary" hidden><h2>Summary</h2><pre id="metrics" class="glass card"></pre></section>
-    <section data-tab-pane="influencers" hidden><h2>Influencers</h2><pre id="influencerTable" class="glass card"></pre></section>
-    <section data-tab-pane="brands" hidden><h2>Brands</h2><pre id="brandTable" class="glass card"></pre></section>
-    <section data-tab-pane="requests" hidden><h2>Requests</h2><pre id="requestTable" class="glass card"></pre></section>
-  </main>
-</div>
-<script src="/public/assets/js/api.js"></script><script src="/public/assets/js/ui.js"></script><script src="./admin.js"></script>
-</body></html>
+  <!-- Navigation -->
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a href="/" class="topbar-logo" data-testid="logo">
+        <span class="logo-dot"></span>
+        InfluencerHub
+      </a>
+      <div class="flex items-center gap-2">
+        <span class="chip" data-testid="admin-badge" id="adminBadge" style="display: none;">
+          <i class="ph ph-shield-check"></i>
+          Admin
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Layout -->
+  <div class="layout">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="adminSidebar">
+      <div class="sidebar-title">Admin Panel</div>
+      <button class="active" data-tab-target="login" data-testid="tab-login">
+        <i class="ph ph-sign-in"></i>
+        Login
+      </button>
+      <button data-tab-target="dashboard" data-testid="tab-dashboard">
+        <i class="ph ph-chart-pie"></i>
+        Dashboard
+      </button>
+      <div class="divider"></div>
+      <div class="sidebar-title">Data</div>
+      <button data-tab-target="influencers" data-testid="tab-influencers">
+        <i class="ph ph-user-circle"></i>
+        Influencers
+      </button>
+      <button data-tab-target="brands" data-testid="tab-brands">
+        <i class="ph ph-buildings"></i>
+        Brands
+      </button>
+      <button data-tab-target="requests" data-testid="tab-requests">
+        <i class="ph ph-paper-plane-tilt"></i>
+        Requests
+      </button>
+    </aside>
+
+    <!-- Main Panel -->
+    <main class="panel">
+      <!-- Login Tab -->
+      <section data-tab-pane="login" data-testid="pane-login">
+        <div class="login-container">
+          <div class="login-card card card-elevated">
+            <div class="login-header">
+              <div class="login-icon">
+                <i class="ph ph-shield-check"></i>
+              </div>
+              <h2>Admin Login</h2>
+              <p>Enter your credentials to access the admin dashboard.</p>
+            </div>
+            
+            <form id="loginForm">
+              <div class="field">
+                <label for="username">
+                  <i class="ph ph-user"></i> Username
+                </label>
+                <input type="text" id="username" placeholder="admin" data-testid="input-username" />
+              </div>
+              
+              <div class="field">
+                <label for="password">
+                  <i class="ph ph-lock"></i> Password
+                </label>
+                <input type="password" id="password" placeholder="••••••••" data-testid="input-password" />
+              </div>
+              
+              <button type="submit" class="btn btn-primary btn-lg w-full btn-shimmer" id="loginBtn" data-testid="login-button">
+                <i class="ph ph-sign-in"></i>
+                Sign In
+              </button>
+            </form>
+            
+            <div class="login-footer">
+              <p><i class="ph ph-info"></i> Admin credentials are set via environment variables.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Dashboard Tab -->
+      <section data-tab-pane="dashboard" hidden data-testid="pane-dashboard">
+        <div class="panel-header">
+          <h2 class="panel-title">Dashboard</h2>
+          <button class="btn btn-ghost" id="refreshDashboard" data-testid="refresh-dashboard">
+            <i class="ph ph-arrows-clockwise"></i>
+            Refresh
+          </button>
+        </div>
+
+        <div class="dashboard-stats" id="dashboardStats">
+          <div class="stat-card">
+            <div class="stat-icon" style="background: var(--primary-soft); color: var(--primary);">
+              <i class="ph ph-user-circle"></i>
+            </div>
+            <div class="stat-content">
+              <div class="stat-value" id="statInfluencers">-</div>
+              <div class="stat-label">Total Influencers</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon" style="background: rgba(59, 130, 246, 0.1); color: #3B82F6;">
+              <i class="ph ph-buildings"></i>
+            </div>
+            <div class="stat-content">
+              <div class="stat-value" id="statBrands">-</div>
+              <div class="stat-label">Total Brands</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon" style="background: rgba(16, 185, 129, 0.1); color: #10B981;">
+              <i class="ph ph-paper-plane-tilt"></i>
+            </div>
+            <div class="stat-content">
+              <div class="stat-value" id="statRequests">-</div>
+              <div class="stat-label">Total Requests</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon" style="background: rgba(245, 158, 11, 0.1); color: #F59E0B;">
+              <i class="ph ph-lightning"></i>
+            </div>
+            <div class="stat-content">
+              <div class="stat-value" id="statToday">-</div>
+              <div class="stat-label">Requests Today</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="dashboard-section">
+          <h3>Top Niches</h3>
+          <div id="topNiches" class="niches-list">
+            <div class="skeleton" style="height: 40px; margin-bottom: 0.5rem;"></div>
+            <div class="skeleton" style="height: 40px; margin-bottom: 0.5rem;"></div>
+            <div class="skeleton" style="height: 40px;"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Influencers Tab -->
+      <section data-tab-pane="influencers" hidden data-testid="pane-influencers">
+        <div class="panel-header">
+          <h2 class="panel-title">Influencers</h2>
+          <span class="chip" id="influencerCount">0 records</span>
+        </div>
+        
+        <div class="data-table-container">
+          <table class="data-table" id="influencersTable" data-testid="influencers-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Handle</th>
+                <th>Niche</th>
+                <th>Followers</th>
+                <th>Rate</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="influencersBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Brands Tab -->
+      <section data-tab-pane="brands" hidden data-testid="pane-brands">
+        <div class="panel-header">
+          <h2 class="panel-title">Brands</h2>
+          <span class="chip" id="brandCount">0 records</span>
+        </div>
+        
+        <div class="data-table-container">
+          <table class="data-table" id="brandsTable" data-testid="brands-table">
+            <thead>
+              <tr>
+                <th>Company</th>
+                <th>Contact</th>
+                <th>Email</th>
+                <th>Industry</th>
+                <th>Joined</th>
+              </tr>
+            </thead>
+            <tbody id="brandsBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Requests Tab -->
+      <section data-tab-pane="requests" hidden data-testid="pane-requests">
+        <div class="panel-header">
+          <h2 class="panel-title">All Requests</h2>
+          <span class="chip" id="requestCount">0 records</span>
+        </div>
+        
+        <div class="data-table-container">
+          <table class="data-table" id="requestsTable" data-testid="requests-table">
+            <thead>
+              <tr>
+                <th>Request ID</th>
+                <th>Campaign</th>
+                <th>Status</th>
+                <th>Budget</th>
+                <th>Channel</th>
+                <th>Created</th>
+              </tr>
+            </thead>
+            <tbody id="requestsBody"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Toast Container -->
+  <div id="toastContainer"></div>
+
+  <!-- Scripts -->
+  <script src="/public/assets/js/api.js"></script>
+  <script src="/public/assets/js/ui.js"></script>
+  <script src="/public/assets/js/formatters.js"></script>
+  <script src="/apps/admin/admin.js"></script>
+</body>
+</html>
