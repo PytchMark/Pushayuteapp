@@ -1,33 +1,295 @@
-<!doctype html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Influencer Portal</title><link rel="stylesheet" href="/public/assets/css/shared.css"><link rel="stylesheet" href="./influencer.css"></head>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Influencer Portal — InfluencerHub</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet" />
+  
+  <!-- Icons -->
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="/public/assets/css/shared.css" />
+  <link rel="stylesheet" href="/apps/influencer/influencer.css" />
+</head>
 <body>
-<header class="topbar"><div class="container topbar-inner"><strong>InfluencerHub · Influencer</strong><span class="glass" style="padding:.4rem .7rem">Account</span></div></header>
-<div class="layout">
-  <aside class="sidebar" id="influencerSidebar">
-    <button class="active" data-tab-target="profile">Profile</button>
-    <button data-tab-target="media">Media</button>
-    <button data-tab-target="requests">Requests</button>
-  </aside>
-  <main class="panel">
-    <section data-tab-pane="profile">
-      <h2 class="section-title">Profile Builder</h2>
-      <form id="profileForm" class="glass card">
-        <div class="field"><label>Handle</label><input name="handle"></div>
-        <div class="field"><label>Display Name</label><input name="display_name"></div>
-        <div class="field"><label>Bio</label><textarea name="bio"></textarea></div>
-        <div class="field"><label>Niche</label><input name="niche"></div>
-        <div class="field"><label>Location</label><input name="location"></div>
-        <div class="field"><label>Followers</label><input name="followers_count" type="number"></div>
-        <div class="field"><label>Engagement Rate</label><input name="engagement_rate" type="number" step="0.01"></div>
-        <div class="field"><label>Rate Min</label><input name="rate_min" type="number"></div>
-        <div class="field"><label>Rate Max</label><input name="rate_max" type="number"></div>
-        <div class="field"><label>Instagram</label><input name="instagram"></div>
-        <div class="field"><label>TikTok</label><input name="tiktok"></div>
-        <button type="button" class="btn" id="saveProfile">Save Profile</button>
-      </form>
-    </section>
-    <section data-tab-pane="media" hidden><h2>Media Upload</h2><div class="glass card"><input type="file" id="mediaUpload" /><p id="uploadResult"></p></div></section>
-    <section data-tab-pane="requests" hidden><h2>Inbound Requests</h2><div id="requestList" class="card-grid"></div></section>
-  </main>
-</div>
-<script src="/public/assets/js/api.js"></script><script src="/public/assets/js/ui.js"></script><script src="./influencer.js"></script>
-</body></html>
+  <!-- Navigation -->
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a href="/" class="topbar-logo" data-testid="logo">
+        <span class="logo-dot"></span>
+        InfluencerHub
+      </a>
+      <div class="flex items-center gap-2">
+        <span class="chip chip-primary" data-testid="user-badge">
+          <i class="ph ph-user-circle"></i>
+          Influencer Account
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Layout -->
+  <div class="layout">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="influencerSidebar">
+      <div class="sidebar-title">My Account</div>
+      <button class="active" data-tab-target="profile" data-testid="tab-profile">
+        <i class="ph ph-user"></i>
+        Profile
+      </button>
+      <button data-tab-target="media" data-testid="tab-media">
+        <i class="ph ph-images"></i>
+        Media
+      </button>
+      <button data-tab-target="requests" data-testid="tab-requests">
+        <i class="ph ph-envelope-simple"></i>
+        Requests
+        <span class="request-badge" id="requestBadge"></span>
+      </button>
+      <div class="divider"></div>
+      <button data-tab-target="analytics" data-testid="tab-analytics">
+        <i class="ph ph-chart-line"></i>
+        Analytics
+      </button>
+    </aside>
+
+    <!-- Main Panel -->
+    <main class="panel">
+      <!-- Profile Tab -->
+      <section data-tab-pane="profile" data-testid="pane-profile">
+        <div class="panel-header">
+          <h2 class="panel-title">Profile Builder</h2>
+          <span class="chip">Draft</span>
+        </div>
+
+        <form id="profileForm" class="profile-form">
+          <div class="profile-grid">
+            <!-- Basic Info -->
+            <div class="profile-section card card-elevated">
+              <h3 class="profile-section-title">
+                <i class="ph ph-identification-card"></i>
+                Basic Information
+              </h3>
+              
+              <div class="field-row">
+                <div class="field">
+                  <label for="handle">Handle / Username *</label>
+                  <input type="text" id="handle" name="handle" placeholder="@yourhandle" data-testid="input-handle" />
+                </div>
+                <div class="field">
+                  <label for="display_name">Display Name *</label>
+                  <input type="text" id="display_name" name="display_name" placeholder="Your Name" data-testid="input-name" />
+                </div>
+              </div>
+              
+              <div class="field">
+                <label for="bio">Bio</label>
+                <textarea id="bio" name="bio" rows="3" placeholder="Tell brands about yourself and your content style..." data-testid="input-bio"></textarea>
+              </div>
+              
+              <div class="field-row">
+                <div class="field">
+                  <label for="niche">Primary Niche</label>
+                  <select id="niche" name="niche" data-testid="input-niche">
+                    <option value="">Select niche</option>
+                    <option value="Food">Food</option>
+                    <option value="Beauty">Beauty</option>
+                    <option value="Fitness">Fitness</option>
+                    <option value="Tech">Tech</option>
+                    <option value="Travel">Travel</option>
+                    <option value="Fashion">Fashion</option>
+                    <option value="Lifestyle">Lifestyle</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="location">Location</label>
+                  <input type="text" id="location" name="location" placeholder="City, Country" data-testid="input-location" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Platforms -->
+            <div class="profile-section card card-elevated">
+              <h3 class="profile-section-title">
+                <i class="ph ph-link"></i>
+                Platform Links
+              </h3>
+              
+              <div class="field">
+                <label for="instagram">
+                  <i class="ph ph-instagram-logo"></i> Instagram
+                </label>
+                <input type="text" id="instagram" name="instagram" placeholder="@yourinstagram" data-testid="input-instagram" />
+              </div>
+              
+              <div class="field">
+                <label for="tiktok">
+                  <i class="ph ph-tiktok-logo"></i> TikTok
+                </label>
+                <input type="text" id="tiktok" name="tiktok" placeholder="@yourtiktok" data-testid="input-tiktok" />
+              </div>
+              
+              <div class="field">
+                <label for="youtube">
+                  <i class="ph ph-youtube-logo"></i> YouTube
+                </label>
+                <input type="text" id="youtube" name="youtube" placeholder="Channel URL" data-testid="input-youtube" />
+              </div>
+            </div>
+
+            <!-- Metrics -->
+            <div class="profile-section card card-elevated">
+              <h3 class="profile-section-title">
+                <i class="ph ph-chart-bar"></i>
+                Audience Metrics
+              </h3>
+              
+              <div class="field-row">
+                <div class="field">
+                  <label for="followers_count">Total Followers</label>
+                  <input type="number" id="followers_count" name="followers_count" placeholder="50000" data-testid="input-followers" />
+                </div>
+                <div class="field">
+                  <label for="engagement_rate">Engagement Rate (%)</label>
+                  <input type="number" id="engagement_rate" name="engagement_rate" step="0.01" placeholder="4.5" data-testid="input-engagement" />
+                </div>
+              </div>
+              
+              <div class="field">
+                <label for="avg_views">Average Views per Post</label>
+                <input type="number" id="avg_views" name="avg_views" placeholder="25000" data-testid="input-views" />
+              </div>
+            </div>
+
+            <!-- Rates -->
+            <div class="profile-section card card-elevated">
+              <h3 class="profile-section-title">
+                <i class="ph ph-currency-dollar"></i>
+                Rates & Packages
+              </h3>
+              
+              <div class="field-row">
+                <div class="field">
+                  <label for="rate_min">Starting Rate (USD)</label>
+                  <input type="number" id="rate_min" name="rate_min" placeholder="250" data-testid="input-rate-min" />
+                </div>
+                <div class="field">
+                  <label for="rate_max">Maximum Rate (USD)</label>
+                  <input type="number" id="rate_max" name="rate_max" placeholder="2500" data-testid="input-rate-max" />
+                </div>
+              </div>
+              
+              <div class="field">
+                <label for="pricing_notes">Pricing Notes</label>
+                <textarea id="pricing_notes" name="pricing_notes" rows="2" placeholder="Describe your packages, what's included..." data-testid="input-pricing"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="profile-actions">
+            <button type="button" class="btn btn-primary btn-lg btn-shimmer" id="saveProfile" data-testid="save-profile">
+              <i class="ph ph-floppy-disk"></i>
+              Save Profile
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- Media Tab -->
+      <section data-tab-pane="media" hidden data-testid="pane-media">
+        <div class="panel-header">
+          <h2 class="panel-title">Media Gallery</h2>
+        </div>
+
+        <div class="media-upload-zone" id="uploadZone" data-testid="upload-zone">
+          <input type="file" id="mediaUpload" accept="image/*,video/*" hidden />
+          <div class="upload-icon">
+            <i class="ph ph-cloud-arrow-up"></i>
+          </div>
+          <h4>Drop files here or click to upload</h4>
+          <p>Supports images and videos up to 40MB</p>
+          <button type="button" class="btn btn-primary" id="uploadBtn" data-testid="upload-button">
+            <i class="ph ph-plus"></i>
+            Choose File
+          </button>
+        </div>
+
+        <div id="uploadProgress" class="upload-progress hidden">
+          <div class="upload-progress-bar"></div>
+          <span>Uploading...</span>
+        </div>
+
+        <div id="uploadResult" class="upload-result"></div>
+
+        <div class="media-gallery" id="mediaGallery" data-testid="media-gallery">
+          <div class="empty-state">
+            <div class="empty-state-icon"><i class="ph ph-images"></i></div>
+            <h4>No media uploaded yet</h4>
+            <p>Upload photos and videos to showcase your content portfolio.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Requests Tab -->
+      <section data-tab-pane="requests" hidden data-testid="pane-requests">
+        <div class="panel-header">
+          <h2 class="panel-title">Inbound Requests</h2>
+          <button class="btn btn-ghost" id="refreshInbound" data-testid="refresh-requests">
+            <i class="ph ph-arrows-clockwise"></i>
+            Refresh
+          </button>
+        </div>
+        
+        <div id="requestList" class="requests-list" data-testid="request-list"></div>
+      </section>
+
+      <!-- Analytics Tab -->
+      <section data-tab-pane="analytics" hidden data-testid="pane-analytics">
+        <div class="panel-header">
+          <h2 class="panel-title">Analytics</h2>
+        </div>
+        
+        <div class="analytics-grid">
+          <div class="stat-card">
+            <div class="stat-value" id="statViews">0</div>
+            <div class="stat-label">Profile Views</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="statRequests">0</div>
+            <div class="stat-label">Total Requests</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="statBooked">0</div>
+            <div class="stat-label">Booked Deals</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="statResponse">-</div>
+            <div class="stat-label">Response Rate</div>
+          </div>
+        </div>
+
+        <div class="card card-elevated mt-4" style="padding: 2rem; text-align: center;">
+          <i class="ph ph-chart-line" style="font-size: 3rem; color: var(--text-muted); margin-bottom: 1rem;"></i>
+          <h4>Detailed Analytics Coming Soon</h4>
+          <p class="muted">Track your profile performance, request trends, and earnings over time.</p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Toast Container -->
+  <div id="toastContainer"></div>
+
+  <!-- Scripts -->
+  <script src="/public/assets/js/api.js"></script>
+  <script src="/public/assets/js/ui.js"></script>
+  <script src="/public/assets/js/formatters.js"></script>
+  <script src="/apps/influencer/influencer.js"></script>
+</body>
+</html>
