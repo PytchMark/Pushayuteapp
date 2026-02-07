@@ -29,18 +29,13 @@ async function ensureSeedData() {
   if (count && count > 0) return;
 
   const demos = [
-    ['maya-bites', 'Maya Bites', 'Food', 'Kingston'],
-    ['fitjay', 'Fit Jay', 'Fitness', 'Montego Bay'],
-    ['beautybyk', 'BeautyByK', 'Beauty', 'New York'],
-    ['techwithrio', 'Tech with Rio', 'Tech', 'Toronto'],
-    ['traveltoni', 'Travel Toni', 'Travel', 'London'],
-    ['chefzion', 'Chef Zion', 'Food', 'Atlanta'],
-    ['glowwithni', 'Glow with Ni', 'Beauty', 'Miami'],
-    ['corebykyle', 'Core by Kyle', 'Fitness', 'Kingston'],
-    ['bytebella', 'ByteBella', 'Tech', 'San Francisco'],
-    ['roamwithrae', 'Roam with Rae', 'Travel', 'Cape Town'],
-    ['streetplates', 'Street Plates', 'Food', 'Los Angeles'],
-    ['fitflowana', 'FitFlow Ana', 'Fitness', 'Berlin']
+    ['maya-bites', 'Maya Bites', 'Food', 'Kingston', 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=400&q=80'],
+    ['fitjay', 'Fit Jay', 'Fitness', 'Los Angeles', 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80'],
+    ['beautybyk', 'BeautyByK', 'Beauty', 'New York', 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80'],
+    ['techwithrio', 'Tech with Rio', 'Tech', 'Toronto', 'https://images.pexels.com/photos/12433030/pexels-photo-12433030.jpeg?auto=compress&cs=tinysrgb&w=400'],
+    ['traveltoni', 'Travel Toni', 'Travel', 'London', 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=400&q=80'],
+    ['glowwithni', 'Glow with Ni', 'Beauty', 'Miami', 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=400&q=80'],
+    ['bytebella', 'ByteBella', 'Tech', 'San Francisco', 'https://images.pexels.com/photos/7481981/pexels-photo-7481981.jpeg?auto=compress&cs=tinysrgb&w=400']
   ];
 
   const rows = demos.map(([handle, display_name, niche, location], idx) => ({
