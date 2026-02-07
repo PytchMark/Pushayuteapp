@@ -38,7 +38,7 @@ async function ensureSeedData() {
     ['bytebella', 'ByteBella', 'Tech', 'San Francisco', 'https://images.pexels.com/photos/7481981/pexels-photo-7481981.jpeg?auto=compress&cs=tinysrgb&w=400']
   ];
 
-  const rows = demos.map(([handle, display_name, niche, location], idx) => ({
+  const rows = demos.map(([handle, display_name, niche, location, profile_image], idx) => ({
     user_id: null,
     handle,
     display_name,
@@ -46,19 +46,19 @@ async function ensureSeedData() {
     niche,
     location,
     platforms: { instagram: `@${handle}`, tiktok: `@${handle}` },
-    followers_count: 25000 + idx * 4200,
-    engagement_rate: (2.4 + idx * 0.17).toFixed(2),
-    avg_views: 12000 + idx * 1300,
-    rate_min: 250 + idx * 40,
-    rate_max: 900 + idx * 90,
+    followers_count: 25000 + idx * 8500,
+    engagement_rate: (3.2 + idx * 0.35).toFixed(2),
+    avg_views: 15000 + idx * 2800,
+    rate_min: 300 + idx * 75,
+    rate_max: 1200 + idx * 180,
     pricing_notes: 'Packages available for UGC, short-form video, and monthly retainers.',
     content_types: ['Reels', 'UGC', 'Story'],
-    audience_regions: ['Caribbean', 'North America'],
-    verified: idx % 3 === 0,
-    profile_image_url: 'https://res.cloudinary.com/demo/image/upload/v1312461204/sample.jpg',
+    audience_regions: ['North America', 'Europe'],
+    verified: idx % 2 === 0,
+    profile_image_url: profile_image,
     cover_video_url: null,
-    portfolio_media: [{ type: 'image', url: 'https://res.cloudinary.com/demo/image/upload/v1312461204/sample.jpg' }],
-    plan_tier: idx % 4 === 0 ? 'pro' : 'starter'
+    portfolio_media: [{ type: 'image', url: profile_image }],
+    plan_tier: idx % 3 === 0 ? 'pro' : 'starter'
   }));
 
   await supabaseAdmin.from('influencers').insert(rows);
