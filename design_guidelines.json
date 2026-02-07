@@ -1,0 +1,145 @@
+{
+  "project_name": "InfluencerHub",
+  "tech_stack": {
+    "framework": "Vanilla HTML/CSS/JS",
+    "backend": "Node.js/Express",
+    "styling": "CSS Variables + Utility Classes (Tailwind-like naming)",
+    "motion": "GSAP + Lenis",
+    "icons": "Phosphor Icons (via CDN)"
+  },
+  "design_system": {
+    "theme": "light",
+    "typography": {
+      "headings": {
+        "family": "'Syne', sans-serif",
+        "weights": [700, 800],
+        "usage": "Hero titles, Section headers, Impact text"
+      },
+      "body": {
+        "family": "'Inter', sans-serif",
+        "weights": [400, 500, 600],
+        "usage": "Paragraphs, UI elements, Data tables"
+      },
+      "cdn_links": [
+        "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Syne:wght@700;800&display=swap"
+      ]
+    },
+    "colors": {
+      "palette": {
+        "primary": "#E11D48",
+        "primary_hover": "#BE123C",
+        "secondary": "#0F172A",
+        "background": "#FFFFFF",
+        "surface": "#F8FAFC",
+        "surface_hover": "#F1F5F9",
+        "border": "#E2E8F0",
+        "text_main": "#0F172A",
+        "text_muted": "#64748B",
+        "success": "#10B981",
+        "error": "#EF4444"
+      },
+      "gradients": {
+        "glow_red": "radial-gradient(circle at center, rgba(225, 29, 72, 0.15) 0%, rgba(255, 255, 255, 0) 70%)",
+        "text_reveal": "linear-gradient(to right, #0F172A 0%, #64748B 100%)"
+      }
+    },
+    "spacing": {
+      "container_padding": "clamp(1rem, 5vw, 4rem)",
+      "section_gap": "clamp(4rem, 10vw, 8rem)",
+      "grid_gap": "2rem"
+    },
+    "border_radius": {
+      "sm": "4px",
+      "md": "8px",
+      "lg": "16px",
+      "xl": "24px",
+      "pill": "9999px"
+    },
+    "shadows": {
+      "card": "0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03)",
+      "hover": "0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02)",
+      "glow": "0 0 20px rgba(225, 29, 72, 0.3)"
+    }
+  },
+  "assets": {
+    "images": {
+      "hero_bg": "https://images.unsplash.com/photo-1616835240434-d91feb116120?auto=format&fit=crop&w=1920&q=80",
+      "influencers": [
+        {
+          "name": "Alex Rivera",
+          "niche": "Tech & Setup",
+          "url": "https://images.pexels.com/photos/12433030/pexels-photo-12433030.jpeg?auto=compress&cs=tinysrgb&w=800"
+        },
+        {
+          "name": "Sarah Chen",
+          "niche": "Lifestyle & Travel",
+          "url": "https://images.pexels.com/photos/7481981/pexels-photo-7481981.jpeg?auto=compress&cs=tinysrgb&w=800"
+        },
+        {
+          "name": "Marcus J",
+          "niche": "Fashion",
+          "url": "https://images.unsplash.com/photo-1562869323-d3d7be3e88a6?auto=format&fit=crop&w=800&q=80"
+        },
+        {
+          "name": "Elena R",
+          "niche": "Beauty",
+          "url": "https://images.unsplash.com/photo-1735663202660-1a44d63ae163?auto=format&fit=crop&w=800&q=80"
+        }
+      ],
+      "brands": [
+        "https://images.unsplash.com/photo-1613905383527-8994ba2f9896?auto=format&fit=crop&w=200&q=80",
+        "https://images.unsplash.com/photo-1628760584600-6c31148991e9?auto=format&fit=crop&w=200&q=80",
+        "https://images.unsplash.com/photo-1595409583957-5d1ec5869de9?auto=format&fit=crop&w=200&q=80"
+      ]
+    },
+    "icons": {
+      "library": "Phosphor Icons",
+      "cdn": "https://unpkg.com/@phosphor-icons/web"
+    }
+  },
+  "components": {
+    "buttons": {
+      "primary": "bg-primary text-white px-8 py-4 rounded-pill font-semibold hover:bg-primary-hover transition-colors shadow-glow",
+      "secondary": "bg-surface text-text-main px-8 py-4 rounded-pill font-semibold hover:bg-surface-hover border border-border transition-colors",
+      "ghost": "text-text-main hover:text-primary font-medium transition-colors"
+    },
+    "cards": {
+      "influencer": "bg-white border border-border rounded-xl overflow-hidden hover:shadow-hover transition-all duration-300 group cursor-pointer",
+      "stat": "bg-surface p-6 rounded-lg border border-border/50"
+    },
+    "inputs": {
+      "default": "w-full bg-surface border border-border rounded-lg px-4 py-3 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
+    }
+  },
+  "motion_guidelines": {
+    "libraries": ["GSAP", "ScrollTrigger", "Lenis"],
+    "patterns": {
+      "fade_up": {
+        "y": 50,
+        "opacity": 0,
+        "duration": 1,
+        "ease": "power3.out"
+      },
+      "stagger": 0.1,
+      "parallax_strength": 100,
+      "text_reveal": "clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%)"
+    }
+  },
+  "instructions_to_main_agent": [
+    "IMPLEMENTATION TARGET: Vanilla HTML/CSS/JS. Do NOT use React.",
+    "Use the provided CSS variables in 'public/assets/css/shared.css' to enforce the design system.",
+    "Use GSAP for all scroll-based animations. Initialize Lenis in 'public/assets/js/motion.js'.",
+    "Ensure all interactive elements have 'data-testid' attributes.",
+    "For the Storefront: Focus on the 'Tetris' grid layout and large typography.",
+    "For the App Portals: Focus on the 'Bento' grid and high data density.",
+    "Use the 'Syne' font for all headings to give it the premium editorial look.",
+    "The 'Red' accent should be used sparingly for CTAs and key highlights, not as a background color."
+  ],
+  "UNIVERSAL_GUIDELINES_FOR_MAIN_AGENT": [
+    "Avoid generic centered layouts. Use asymmetry.",
+    "Use 2-3x more spacing than typical designs.",
+    "Every interaction needs a micro-animation.",
+    "Do not use gradients for backgrounds, use them for text or subtle glows only.",
+    "Ensure high contrast for text readability (APCA standards)."
+  ]
+}
