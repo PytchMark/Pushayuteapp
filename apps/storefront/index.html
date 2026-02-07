@@ -3,57 +3,341 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>InfluencerHub — Premium Collab Marketplace</title>
+  <title>InfluencerHub — Premium Influencer Discovery Platform</title>
+  <meta name="description" content="Discover premium influencers, compare rates, and launch collaboration requests in one streamlined platform." />
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet" />
+  
+  <!-- Icons -->
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  
+  <!-- Styles -->
   <link rel="stylesheet" href="/public/assets/css/shared.css" />
   <link rel="stylesheet" href="/public/assets/css/motion.css" />
 </head>
 <body>
-  <header class="topbar"><div class="container topbar-inner"><strong>InfluencerHub</strong><nav><a href="/apps/brand">Brand Portal</a> · <a href="/apps/influencer">Influencer Portal</a> · <a href="/apps/admin">Admin</a></nav></div></header>
+  <!-- Grain Texture Overlay -->
+  <div class="grain-overlay"></div>
 
-  <section class="hero">
-    <div class="hero-bg"></div>
-    <div class="container hero-content hero-copy">
-      <h1><span class="reveal-line">Find creators who move markets.</span></h1>
-      <p>Search, compare rates, and launch collaboration requests in one streamlined flow.</p>
-      <div><a class="btn shimmer" href="#discovery">Start Discovering</a></div>
-    </div>
-  </section>
-
-  <section class="story-pin container">
-    <article class="chapter glass card">
-      <h2>Story-first matching</h2><ul><li>Intent-led discovery by niche and channel.</li><li>Signal scoring for engagement quality.</li><li>Campaign-ready profile snapshots.</li></ul>
-    </article>
-  </section>
-  <section class="story-pin container"><article class="chapter glass card"><h2>Built for agencies</h2><ul><li>Shortlist and save talent cohorts.</li><li>Bulk request workflow for campaign teams.</li><li>Status tracking from new to booked.</li></ul></article></section>
-  <section class="story-pin container"><article class="chapter glass card"><h2>Scale with confidence</h2><ul><li>Rate transparency and package clarity.</li><li>Portfolio media managed via Cloudinary.</li><li>Supabase-backed auth and data control.</li></ul></article></section>
-
-  <section class="deck-wrap">
-    <div class="deck-track">
-      <div class="deck-panel"><div class="glass card tilt-card"><h3>Search smarter</h3><p>Filter by niche, followers, region, and channel.</p></div></div>
-      <div class="deck-panel"><div class="glass card tilt-card"><h3>Compare rates</h3><p>Inspect rate bands, engagement, and avg views.</p></div></div>
-      <div class="deck-panel"><div class="glass card tilt-card"><h3>Request in one click</h3><p>Campaign tray submits to multiple creators at once.</p></div></div>
-      <div class="deck-panel"><div class="glass card tilt-card"><h3>Track outcomes</h3><p>From outreach to booking, statuses stay synchronized.</p></div></div>
-    </div>
-  </section>
-
-  <section class="discovery" id="discovery">
-    <div class="container">
-      <h2>Discovery Grid</h2>
-      <div style="display:flex; gap:.5rem; flex-wrap:wrap; margin: 1rem 0;">
-        <input id="q" placeholder="Search name, niche, handle" />
-        <select id="niche"><option value="">All niches</option><option>Food</option><option>Beauty</option><option>Fitness</option><option>Tech</option><option>Travel</option></select>
-        <button class="btn" id="searchBtn">Search</button>
+  <!-- Navigation -->
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a href="/" class="topbar-logo" data-testid="logo">
+        <span class="logo-dot"></span>
+        InfluencerHub
+      </a>
+      <nav>
+        <a href="#discovery" data-testid="nav-discover">Discover</a>
+        <a href="#how-it-works" data-testid="nav-how">How It Works</a>
+        <a href="/apps/brand" data-testid="nav-brands">For Brands</a>
+        <a href="/apps/influencer" data-testid="nav-influencers">For Influencers</a>
+      </nav>
+      <div class="flex gap-2">
+        <a href="/apps/brand" class="btn btn-ghost" data-testid="nav-login">Log In</a>
+        <a href="/apps/brand" class="btn btn-primary btn-shimmer" data-testid="nav-get-started">Get Started</a>
       </div>
-      <div id="grid" class="card-grid"></div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-bg">
+      <img 
+        class="hero-bg-image" 
+        src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&w=1920&q=80" 
+        alt="Influencer creating content"
+      />
+      <div class="hero-glow"></div>
+    </div>
+    
+    <div class="container hero-content">
+      <div class="hero-eyebrow" data-testid="hero-eyebrow">
+        <i class="ph ph-sparkle"></i>
+        Trusted by 500+ brands worldwide
+      </div>
+      
+      <h1 class="hero-title" data-testid="hero-title">
+        Find creators who<br/>
+        <span class="highlight">move markets.</span>
+      </h1>
+      
+      <p class="hero-subtitle" data-testid="hero-subtitle">
+        Search top influencers, compare their rates and engagement metrics, then launch collaboration requests — all in one streamlined platform.
+      </p>
+      
+      <div class="hero-cta">
+        <a href="#discovery" class="btn btn-primary btn-lg btn-shimmer btn-magnetic" data-testid="hero-cta-primary">
+          <i class="ph ph-magnifying-glass"></i>
+          Start Discovering
+        </a>
+        <a href="#how-it-works" class="btn btn-secondary btn-lg" data-testid="hero-cta-secondary">
+          See How It Works
+        </a>
+      </div>
     </div>
   </section>
 
-  <section class="container" style="padding:5rem 0; display:grid; gap:1rem; grid-template-columns:repeat(auto-fit,minmax(240px,1fr));">
-    <article class="glass card"><h3>Become a brand</h3><p>Build campaign trays and manage request pipelines.</p><a class="btn" href="/apps/brand">Open Brand Portal</a></article>
-    <article class="glass card"><h3>Join as influencer</h3><p>Create profile, upload media, and handle inbound collabs.</p><a class="btn" href="/apps/influencer">Open Influencer Portal</a></article>
-    <article class="glass card"><h3>Pricing tiers</h3><p>Starter, Growth, and Agency plans (visual placeholder).</p><button class="btn ghost">Coming soon</button></article>
+  <!-- Story Section 1 -->
+  <section class="story-section" id="how-it-works">
+    <div class="container">
+      <div class="chapter">
+        <div class="chapter-content">
+          <div class="chapter-number">01</div>
+          <h2 class="chapter-title">Story-first<br/><span class="text-accent">matching</span></h2>
+          <ul class="chapter-list">
+            <li>Intent-led discovery by niche and channel</li>
+            <li>Signal scoring for engagement quality</li>
+            <li>Campaign-ready profile snapshots</li>
+            <li>Verified metrics from platform APIs</li>
+          </ul>
+        </div>
+        <div class="chapter-visual">
+          <img 
+            class="chapter-image" 
+            src="https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?auto=format&fit=crop&w=800&q=80" 
+            alt="Social media analytics dashboard"
+          />
+          <div class="chapter-image-glow"></div>
+        </div>
+      </div>
+    </div>
   </section>
 
+  <!-- Story Section 2 -->
+  <section class="story-section">
+    <div class="container">
+      <div class="chapter chapter-reverse">
+        <div class="chapter-content">
+          <div class="chapter-number">02</div>
+          <h2 class="chapter-title">Built for<br/><span class="text-accent">agencies</span></h2>
+          <ul class="chapter-list">
+            <li>Shortlist and save talent cohorts</li>
+            <li>Bulk request workflow for campaign teams</li>
+            <li>Status tracking from new to booked</li>
+            <li>Team collaboration and notes</li>
+          </ul>
+        </div>
+        <div class="chapter-visual">
+          <img 
+            class="chapter-image" 
+            src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=800&q=80" 
+            alt="Team collaboration"
+          />
+          <div class="chapter-image-glow"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Story Section 3 -->
+  <section class="story-section">
+    <div class="container">
+      <div class="chapter">
+        <div class="chapter-content">
+          <div class="chapter-number">03</div>
+          <h2 class="chapter-title">Scale with<br/><span class="text-accent">confidence</span></h2>
+          <ul class="chapter-list">
+            <li>Rate transparency and package clarity</li>
+            <li>Portfolio media managed via CDN</li>
+            <li>Secure authentication and data control</li>
+            <li>Real-time campaign status updates</li>
+          </ul>
+        </div>
+        <div class="chapter-visual">
+          <img 
+            class="chapter-image" 
+            src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80" 
+            alt="Growth analytics"
+          />
+          <div class="chapter-image-glow"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Horizontal Scroll Deck -->
+  <section class="deck-section">
+    <div class="deck-wrap">
+      <div class="deck-track">
+        <div class="deck-panel">
+          <div class="deck-card tilt-card">
+            <div class="deck-card-icon">
+              <i class="ph ph-magnifying-glass"></i>
+            </div>
+            <h3>Search Smarter</h3>
+            <p>Filter by niche, follower count, engagement rate, location, and platform. Find exactly who you need.</p>
+          </div>
+        </div>
+        <div class="deck-panel">
+          <div class="deck-card tilt-card">
+            <div class="deck-card-icon">
+              <i class="ph ph-chart-bar"></i>
+            </div>
+            <h3>Compare Rates</h3>
+            <p>Inspect rate bands, engagement metrics, and average views side by side. Make informed decisions.</p>
+          </div>
+        </div>
+        <div class="deck-panel">
+          <div class="deck-card tilt-card">
+            <div class="deck-card-icon">
+              <i class="ph ph-paper-plane-tilt"></i>
+            </div>
+            <h3>Request in One Click</h3>
+            <p>Add influencers to your campaign tray and submit requests to multiple creators at once.</p>
+          </div>
+        </div>
+        <div class="deck-panel">
+          <div class="deck-card tilt-card">
+            <div class="deck-card-icon">
+              <i class="ph ph-chart-line-up"></i>
+            </div>
+            <h3>Track Outcomes</h3>
+            <p>From outreach to booking, statuses stay synchronized. Know exactly where each collaboration stands.</p>
+          </div>
+        </div>
+      </div>
+      <div class="deck-progress">
+        <div class="deck-dot active"></div>
+        <div class="deck-dot"></div>
+        <div class="deck-dot"></div>
+        <div class="deck-dot"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Discovery Section -->
+  <section class="discovery-section" id="discovery">
+    <div class="container">
+      <div class="discovery-header">
+        <h2>Discover <span class="text-accent">Influencers</span></h2>
+        <p class="large">Browse our curated network of verified creators across every niche and platform.</p>
+      </div>
+
+      <div class="discovery-filters" data-testid="discovery-filters">
+        <input 
+          type="text" 
+          id="searchQuery" 
+          placeholder="Search by name, niche, or handle..." 
+          data-testid="search-input"
+        />
+        <select id="nicheFilter" data-testid="niche-filter">
+          <option value="">All Niches</option>
+          <option value="Food">Food</option>
+          <option value="Beauty">Beauty</option>
+          <option value="Fitness">Fitness</option>
+          <option value="Tech">Tech</option>
+          <option value="Travel">Travel</option>
+          <option value="Fashion">Fashion</option>
+          <option value="Lifestyle">Lifestyle</option>
+        </select>
+        <select id="sortFilter" data-testid="sort-filter">
+          <option value="">Sort By</option>
+          <option value="followers_desc">Most Followers</option>
+          <option value="engagement_desc">Highest Engagement</option>
+          <option value="rate_asc">Lowest Rate</option>
+        </select>
+        <button class="btn btn-primary" id="searchBtn" data-testid="search-button">
+          <i class="ph ph-magnifying-glass"></i>
+          Search
+        </button>
+      </div>
+
+      <div id="influencerGrid" class="card-grid" data-testid="influencer-grid">
+        <!-- Influencer cards will be loaded here -->
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <div class="container">
+      <div class="cta-grid">
+        <article class="cta-card">
+          <div class="cta-card-icon">
+            <i class="ph ph-buildings"></i>
+          </div>
+          <h3>For Brands</h3>
+          <p>Build campaign trays, manage request pipelines, and track collaboration statuses all in one place.</p>
+          <a href="/apps/brand" class="btn btn-primary btn-shimmer" data-testid="cta-brand">
+            Open Brand Portal
+            <i class="ph ph-arrow-right"></i>
+          </a>
+        </article>
+
+        <article class="cta-card">
+          <div class="cta-card-icon">
+            <i class="ph ph-user-circle"></i>
+          </div>
+          <h3>For Influencers</h3>
+          <p>Create your profile, showcase your portfolio, and manage inbound collaboration requests effortlessly.</p>
+          <a href="/apps/influencer" class="btn btn-primary btn-shimmer" data-testid="cta-influencer">
+            Open Influencer Portal
+            <i class="ph ph-arrow-right"></i>
+          </a>
+        </article>
+
+        <article class="cta-card">
+          <div class="cta-card-icon">
+            <i class="ph ph-crown"></i>
+          </div>
+          <h3>Premium Plans</h3>
+          <p>Unlock advanced features, priority placement, and dedicated support with our premium tiers.</p>
+          <button class="btn btn-secondary" disabled data-testid="cta-pricing">
+            Coming Soon
+          </button>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer style="background: var(--text); color: var(--bg); padding: 4rem 0;">
+    <div class="container">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 3rem;">
+        <div>
+          <div class="topbar-logo" style="color: var(--bg); margin-bottom: 1rem;">
+            <span class="logo-dot"></span>
+            InfluencerHub
+          </div>
+          <p style="color: rgba(255,255,255,0.6); font-size: 0.875rem;">
+            The premium platform for influencer discovery and collaboration management.
+          </p>
+        </div>
+        <div>
+          <h4 style="margin-bottom: 1rem; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em; color: rgba(255,255,255,0.5);">Platform</h4>
+          <ul style="list-style: none;">
+            <li style="margin-bottom: 0.5rem;"><a href="#discovery" style="color: rgba(255,255,255,0.8);">Discover</a></li>
+            <li style="margin-bottom: 0.5rem;"><a href="/apps/brand" style="color: rgba(255,255,255,0.8);">Brand Portal</a></li>
+            <li style="margin-bottom: 0.5rem;"><a href="/apps/influencer" style="color: rgba(255,255,255,0.8);">Influencer Portal</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 style="margin-bottom: 1rem; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em; color: rgba(255,255,255,0.5);">Resources</h4>
+          <ul style="list-style: none;">
+            <li style="margin-bottom: 0.5rem;"><a href="#" style="color: rgba(255,255,255,0.8);">Help Center</a></li>
+            <li style="margin-bottom: 0.5rem;"><a href="#" style="color: rgba(255,255,255,0.8);">API Docs</a></li>
+            <li style="margin-bottom: 0.5rem;"><a href="#" style="color: rgba(255,255,255,0.8);">Blog</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 style="margin-bottom: 1rem; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em; color: rgba(255,255,255,0.5);">Connect</h4>
+          <div style="display: flex; gap: 1rem;">
+            <a href="#" style="color: rgba(255,255,255,0.8); font-size: 1.25rem;"><i class="ph ph-twitter-logo"></i></a>
+            <a href="#" style="color: rgba(255,255,255,0.8); font-size: 1.25rem;"><i class="ph ph-instagram-logo"></i></a>
+            <a href="#" style="color: rgba(255,255,255,0.8); font-size: 1.25rem;"><i class="ph ph-linkedin-logo"></i></a>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1); text-align: center; color: rgba(255,255,255,0.5); font-size: 0.875rem;">
+        © 2024 InfluencerHub. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/bundled/lenis.min.js"></script>
@@ -61,6 +345,5 @@
   <script src="/public/assets/js/formatters.js"></script>
   <script src="/public/assets/js/motion.js"></script>
   <script src="/apps/storefront/storefront.js"></script>
-  
 </body>
 </html>
